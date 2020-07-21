@@ -20,7 +20,7 @@ def fetchtweets():
 		    tweets.append(tweet.text)
 		    if(tweet.id > since_id):
 		    	since_id = tweet.id
-		time.sleep(600) #10 minutes
+		time.sleep(10) #10 minutes
 		public_tweets = api.user_timeline(screen_name = handle, since_id = since_id)
 
 def authenticate():
@@ -30,7 +30,7 @@ def authenticate():
 	return api
 
 def runapp():
-	app.run(host = '127.0.0.1', port = 5002)
+	app.run(host = '0.0.0.0', port = 5010)
 
 if __name__ == '__main__':	
 
@@ -68,8 +68,8 @@ if __name__ == '__main__':
 		thread1.start()
 		thread2.start()
 
-		while True: #keep the main thread awake so that I can exit using Ctrl-C until I have another solution
-			time.sleep(0.5)
+		#while True: #keep the main thread awake so that I can exit using Ctrl-C until I have another solution
+		#	time.sleep(0.5)
 
 		thread1.join()
 		thread2.join()
