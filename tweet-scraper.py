@@ -12,12 +12,16 @@ def print_tweets():
     return jsonify(tweets)
 
 def fetchtweets():
-	while True:
-		public_tweets = api.user_timeline(handle)
+	since_id = 0
+	public_tweets = api.user_timeline(screen_name = handle)
+	while True:		
 		for tweet in public_tweets:
 		    print(tweet.text)
 		    tweets.append(tweet.text)
-		time.sleep(10)
+		    if(tweet.id > since_id):
+		    	since_id = tweet.id
+		time.sleep(600) #10 minutes
+		public_tweets = api.user_timeline(screen_name = handle, since_id = since_id)
 
 def authenticate():
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -32,6 +36,7 @@ if __name__ == '__main__':
 
 	tweets = []
 
+	# based on a quick skim of the doco around authentication, I feel there may be a better way to do this. But at the moment I believe I'm limited by Tweepy.
 	consumer_key = ''
 	consumer_secret = ''
 	access_token = ''
@@ -69,5 +74,5 @@ if __name__ == '__main__':
 		thread1.join()
 		thread2.join()
 
-	except:
-		print 'Something went wrong!! To begin with, please check your API credentials.'
+	except: #catching all exceptions here just so that the program exits cleanly
+		print 'Something went wrong!!'
